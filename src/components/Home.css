@@ -1,0 +1,46 @@
+.App {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-around;
+  }
+
+  .movie-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+  }
+  
+  .movie-container > h2 {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    width: 200px;
+  }
+  
+  .pagination {
+    text-align: center;
+  }
+  
+  .prevBtn {
+    background-color: #333;
+   color: white;
+   margin-top: 2px;
+   padding: 10px 20px;
+  }
+
+  .nextBtn {
+    background-color: #333;
+   color: white;
+   margin-top: 2px;
+   padding: 10px 20px;
+  }
+
+  .pageNumber {
+    color: black;
+   margin-top: 2px;
+   padding: 10px 20px; 
+  }

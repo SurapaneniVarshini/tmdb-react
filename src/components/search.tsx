@@ -13,23 +13,8 @@ export const Search = ({ onSearch }: SearchVars) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setQuery(value);
-        delayedSearch(value);
+        onSearch(value);
       };
-
-    const debounce = (func: Function, delay: number) => {
-        let timeoutId: number;
-        return function (this: any, ...args: any[]) {
-          clearTimeout(timeoutId);
-          timeoutId = window.setTimeout(() => func.apply(this, args), delay);
-        };
-      };
-    
-      const delayedSearch = debounce((value: string) => {
-        if (value.trim() !== '') {
-          onSearch(value);
-        }
-      }, 750);
-
       
     return (
         <div className="search">

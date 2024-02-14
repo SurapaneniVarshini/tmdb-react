@@ -7,8 +7,42 @@
 
 #heading {
   color: cadetblue;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 h2 {
   display: inline;
+}
+
+.navbar {
+  background-color: black; 
+  overflow: hidden;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.navbar ul li {
+  float: left;
+}
+
+.navbar ul li a {
+  display: block;
+  color: cadetblue; 
+  text-align: center;
+  padding: 14px 16px; 
+  text-decoration: none;
+}
+
+.navbar ul li a:hover {
+  background-color: rgb(46, 46, 46); 
+}
+
+.navbar ul li.active a {
+  background-color: #555; 
+  color: white; 
 }

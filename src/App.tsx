@@ -1,5 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Suspense } from 'react';
 import { Search } from './components/search';
 import { Home } from './components/Home';
 import { NowPlaying } from './components/NowPlaying';
@@ -32,12 +33,14 @@ function App() {
           </ul>
         </div><br />
         <Search onSearch={handleSearch} /><br />
+        <Suspense fallback={<div className="container">Loading...</div>}>
         <Routes>
           <Route path="/popular" element={<Home searchQuery={searchQuery} />} />
           <Route path="/nowPlaying" element={<NowPlaying searchQuery={searchQuery} />} />
           <Route path='/upcoming' element={<Upcoming searchQuery={searchQuery} />} />
           <Route path='/topRated' element={<TopRated searchQuery={searchQuery} />} />
         </Routes>
+        </Suspense>
       </div>
     </Router>
   );

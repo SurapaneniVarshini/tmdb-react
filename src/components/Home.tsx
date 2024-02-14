@@ -42,6 +42,7 @@ export const Home = ({ searchQuery }: HomeVars) => {
           const result: Page = response.data;
           setMovies(result.results);
           setTotalPages(result.total_pages);
+          setCurrentPage(page);
         }).catch(error => {
           console.error('Error fetching data:', error);
         });
@@ -55,24 +56,31 @@ export const Home = ({ searchQuery }: HomeVars) => {
         };
     };
 
-    const searchMovies = debounce((query: string) => {
+    const searchMovies = debounce((query: string, page: number) => {
         axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}`)
             .then((response) => {
                 const result: Page = response.data;
                 setMovies(result.results);
                 setTotalPages(result.total_pages);
+                setCurrentPage(page);
             }).catch(error => {
                 console.error('Error fetching data:', error);
             });
     }, 750);
   
     const handleNextPage = () => {
-      setCurrentPage(currentPage + 1);
-    };
-  
-    const handlePrevPage = () => {
-      setCurrentPage(currentPage - 1);
-    };
+        let nextPage = currentPage + 1;
+        if (nextPage <= totalPages) {
+          fetchData(nextPage);
+        }
+      };
+      
+      const handlePrevPage = () => {
+        let prevPage = currentPage - 1;
+        if (prevPage >= 1) {
+          fetchData(prevPage);
+        }
+      };
 
     return (
         <>

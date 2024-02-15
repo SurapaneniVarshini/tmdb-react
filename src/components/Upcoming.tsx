@@ -11,7 +11,7 @@ export const Upcoming = ({ searchQuery }: HomeVars) => {
 
     useEffect(() => {
         if (searchQuery) {
-          searchMovies(searchQuery);
+          searchMovies(searchQuery, 1);
         } else {
           fetchData(1);
         }

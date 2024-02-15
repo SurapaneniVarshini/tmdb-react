@@ -29,7 +29,7 @@ export const Home = ({ searchQuery }: HomeVars) => {
   
     useEffect(() => {
         if (searchQuery) {
-          searchMovies(searchQuery);
+          searchMovies(searchQuery, 1);
         } else {
           fetchData(1);
         }
@@ -57,7 +57,7 @@ export const Home = ({ searchQuery }: HomeVars) => {
     };
 
     const searchMovies = debounce((query: string, page: number) => {
-        axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}`)
+        axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&page=${page}`)
             .then((response) => {
                 const result: Page = response.data;
                 setMovies(result.results);
@@ -71,15 +71,23 @@ export const Home = ({ searchQuery }: HomeVars) => {
     const handleNextPage = () => {
         let nextPage = currentPage + 1;
         if (nextPage <= totalPages) {
-          fetchData(nextPage);
-        }
+          if (searchQuery) {
+              searchMovies(searchQuery, nextPage);
+          } else {
+              fetchData(nextPage);
+          }
+      }
       };
       
       const handlePrevPage = () => {
         let prevPage = currentPage - 1;
         if (prevPage >= 1) {
-          fetchData(prevPage);
-        }
+          if (searchQuery) {
+              searchMovies(searchQuery, prevPage);
+          } else {
+              fetchData(prevPage);
+          }
+      }
       };
 
     return (

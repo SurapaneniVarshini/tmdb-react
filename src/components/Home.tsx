@@ -1,45 +1,55 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { API_KEY } from '../env';
+import { searchMovies, fetchMovies } from './Api';
+import MovieList from './MovieList';
 import './Home.css';
 
 export interface Movie {
-    id: number;
-    title: string;
-    poster_path: string;
-    release_date: string;
-    vote_average: number;
-  }
-  
+  id: number;
+  title: string;
+  poster_path: string;
+  release_date: string;
+  vote_average: number;
+}
+
 export interface Page {
-    page: number;
-    total_pages: number;
-    results: Movie[];
-    total_results: number;
-  }
+  page: number;
+  total_pages: number;
+  results: Movie[];
+  total_results: number;
+}
 
 export interface HomeVars {
-    searchQuery: string;
-  }
+  searchQuery: string;
+}
 
 export const Home = ({ searchQuery }: HomeVars) => {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(0);
-  
-    useEffect(() => {
-        if (searchQuery) {
-          searchMovies(searchQuery, 1);
-        } else {
-          fetchData(1);
-        }
-      }, [searchQuery]);
+    const [loaded, setLoaded] = useState<boolean>(false);
 
-  
+    useEffect(() => {
+        if (searchQuery && searchQuery.trim() !== "") {
+            const timeoutId = setTimeout(() => {
+                searchMovies(searchQuery, 1)
+                    .then(result => {
+                        setMovies(result.results);
+                        setTotalPages(result.total_pages);
+                        setCurrentPage(1);
+                    });
+            }, 1000); 
+            return () => clearTimeout(timeoutId); 
+        } else {
+            if (!loaded) {
+                fetchData(1);
+                setLoaded(true);
+            }
+        }
+    }, [searchQuery, loaded]);
+
     const fetchData = (page: number) => {
-      axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&page=${page}`)
-        .then((response) => {
-          const result: Page = response.data;
+      fetchMovies('/movie/popular', page)
+        .then(result => {
           setMovies(result.results);
           setTotalPages(result.total_pages);
           setCurrentPage(page);
@@ -48,69 +58,44 @@ export const Home = ({ searchQuery }: HomeVars) => {
         });
     };
 
-    const debounce = (func: Function, delay: number) => {
-        let timeoutId: number;
-        return function (this: any, ...args: any[]) {
-            clearTimeout(timeoutId);
-            timeoutId = window.setTimeout(() => func.apply(this, args), delay);
-        };
+    const handleNextPage = () => {
+        const nextPage = currentPage + 1;
+        if (nextPage <= totalPages) {
+            if (searchQuery && searchQuery.trim() !== "") {
+                searchMovies(searchQuery, nextPage)
+                    .then(result => {
+                        setMovies(result.results);
+                        setTotalPages(result.total_pages);
+                        setCurrentPage(nextPage);
+                    });
+            } else {
+                fetchData(nextPage);
+            }
+        }
+    };
+      
+    const handlePrevPage = () => {
+        const prevPage = currentPage - 1;
+        if (prevPage >= 1) {
+            if (searchQuery && searchQuery.trim() !== "") {
+                searchMovies(searchQuery, prevPage)
+                    .then(result => {
+                        setMovies(result.results);
+                        setTotalPages(result.total_pages);
+                        setCurrentPage(prevPage);
+                    });
+            } else {
+               fetchData(prevPage);
+            }
+        }
     };
 
-    const searchMovies = debounce((query: string, page: number) => {
-        axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&page=${page}`)
-            .then((response) => {
-                const result: Page = response.data;
-                setMovies(result.results);
-                setTotalPages(result.total_pages);
-                setCurrentPage(page);
-            }).catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    }, 750);
-  
-    const handleNextPage = () => {
-        let nextPage = currentPage + 1;
-        if (nextPage <= totalPages) {
-          if (searchQuery) {
-              searchMovies(searchQuery, nextPage);
-          } else {
-              fetchData(nextPage);
-          }
-      }
-      };
-      
-      const handlePrevPage = () => {
-        let prevPage = currentPage - 1;
-        if (prevPage >= 1) {
-          if (searchQuery) {
-              searchMovies(searchQuery, prevPage);
-          } else {
-              fetchData(prevPage);
-          }
-      }
-      };
-
     return (
-        <>
-        <div className="title"><h2>Popular movies:</h2></div>
-        <div className="App">
-            {movies.map((movie) => (
-                <div className="movie-container" key={movie.id}>
-                    <h2>{movie.title}</h2>
-                    {movie.poster_path && (
-                        <img src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} alt={`${movie.title} Poster`} />
-                    )}
-                    <p>Release date: {movie.release_date}</p>
-                    <p>Vote average: {movie.vote_average}</p>
-                </div>
-            ))}
-        </div>
-        <div className="pagination">
-            <footer>
-                <button className="prevBtn" onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
-                <span className="pageNumber">{currentPage} of {totalPages}</span>
-                <button className="nextBtn" onClick={handleNextPage} disabled={currentPage === totalPages}>Next</button>
-            </footer>
-        </div></>
+        <MovieList
+            movies={movies}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            handleNextPage={handleNextPage}
+            handlePrevPage={handlePrevPage}/>
     );
 };

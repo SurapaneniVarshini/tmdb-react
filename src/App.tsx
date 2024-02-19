@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { Search } from './components/search';
 import { Home } from './components/Home';
 import { NowPlaying } from './components/NowPlaying';
@@ -15,7 +15,7 @@ function App() {
   };
 
   return (
-    <Router>
+    <BrowserRouter>
       <div>
         <div className='App-header'>
           <header>
@@ -39,7 +39,7 @@ function App() {
           <Route path='/topRated' element={<TopRated searchQuery={searchQuery} />} />
         </Routes>
       </div>
-    </Router>
+    </BrowserRouter>
   );
 }
 

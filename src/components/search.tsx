@@ -9,7 +9,6 @@ interface SearchVars {
 
 export const Search = ({ onSearch }: SearchVars) => {
     const [query, setQuery] = useState('');
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setQuery(value);

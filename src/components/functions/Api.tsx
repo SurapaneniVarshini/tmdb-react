@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Page } from './Home';
-import { API_KEY } from '../env';
+import { Page } from '../Pages/Home';
+import { API_KEY } from '../../env';
 
 export const searchMovies = (query: string, page: number) => {
     return axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&page=${page}`)

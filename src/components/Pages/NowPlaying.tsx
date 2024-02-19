@@ -1,36 +1,37 @@
 import { useEffect, useState } from "react";
 import { Movie, HomeVars } from './Home';
-import { searchMovies, fetchMovies } from './Api';
-import MovieList from './MovieList';
-import './Home.css';
+import { searchMovies, fetchMovies } from '../functions/Api';
+import MovieList from '../functions/MovieList';
+import '../../components/Home.css';
 
-export const Upcoming = ({ searchQuery }: HomeVars) => {
+export const NowPlaying = ({ searchQuery }: HomeVars) => {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [loaded, setLoaded] = useState<boolean>(false);
 
     useEffect(() => {
-        if (searchQuery && searchQuery.trim() !== "") {
-          const timeoutId = setTimeout(() => {
-            searchMovies(searchQuery, 1)
-                .then(result => {
-                    setMovies(result.results);
-                    setTotalPages(result.total_pages);
-                    setCurrentPage(1);
-                });
-        }, 1000); 
-        return () => clearTimeout(timeoutId); 
-        } else {
-          if (!loaded) {
-            fetchData(1);
-            setLoaded(true);
-        }
-        }
-      }, [searchQuery, loaded]);
+      if (searchQuery && searchQuery.trim() !== "") {
+        const timeoutId = setTimeout(() => {
+          searchMovies(searchQuery, 1)
+              .then(result => {
+                  setMovies(result.results);
+                  setTotalPages(result.total_pages);
+                  setCurrentPage(1);
+              });
+      }, 1000); 
+      return () => clearTimeout(timeoutId); 
+      } else {
+        if (!loaded) {
+          fetchData(1);
+          setLoaded(true);
+      }
+      }
+    }, [searchQuery, loaded]);
+
 
     const fetchData = (page: number) => {
-      fetchMovies('/movie/upcoming', page)
+      fetchMovies('/movie/now_playing', page)
         .then(result => {
           setMovies(result.results);
           setTotalPages(result.total_pages);
@@ -73,11 +74,11 @@ export const Upcoming = ({ searchQuery }: HomeVars) => {
     };
 
     return (
-        <MovieList
-            movies={movies}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            handleNextPage={handleNextPage}
-            handlePrevPage={handlePrevPage}/>
-    );
+      <MovieList
+          movies={movies}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handleNextPage={handleNextPage}
+          handlePrevPage={handlePrevPage}/>
+  );
 };

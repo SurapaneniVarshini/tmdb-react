@@ -1,10 +1,10 @@
 import './App.css';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { Search } from './components/search';
-import { Home } from './components/Home';
-import { NowPlaying } from './components/NowPlaying';
-import { TopRated } from './components/TopRated';
-import { Upcoming } from './components/Upcoming';
+import { Search } from './components/functions/search';
+import { Home } from './components/Pages/Home';
+import { NowPlaying } from './components/Pages/NowPlaying';
+import { TopRated } from './components/Pages/TopRated';
+import { Upcoming } from './components/Pages/Upcoming';
 import { useState } from 'react';
 
 function App() {

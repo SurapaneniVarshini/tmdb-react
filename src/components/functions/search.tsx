@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import './Search.css';
+import '../../components/Search.css';
 import {FaSearch} from 'react-icons/fa';
 
 

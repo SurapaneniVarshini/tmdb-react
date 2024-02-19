@@ -1,5 +1,5 @@
 import React from "react";
-import { Movie } from './Home';
+import { Movie } from '../Pages/Home';
 
 interface Props {
     movies: Movie[];
@@ -25,13 +25,14 @@ const MovieList: React.FC<Props> = ({ movies, currentPage, totalPages, handleNex
                     </div>
                 ))}
             </div>
-            <div className="pagination">
-                <footer>
-                    <button className="prevBtn" onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
-                    <span className="pageNumber">{currentPage} of {totalPages}</span>
-                    <button className="nextBtn" onClick={handleNextPage} disabled={currentPage === totalPages}>Next</button>
-                </footer>
-            </div>
+            {(totalPages!==1)&&(
+                <div className="pagination">
+                    <footer>
+                        <button className="prevBtn" onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
+                        <span className="pageNumber">{currentPage} of {totalPages}</span>
+                        <button className="nextBtn" onClick={handleNextPage} disabled={currentPage === totalPages}>Next</button>
+                    </footer>
+                </div>)}
         </>
     );
 };

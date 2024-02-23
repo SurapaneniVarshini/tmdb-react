@@ -1,14 +1,14 @@
-import './App.css';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { Search } from './components/functions/search';
-import { Home } from './components/Pages/Home';
-import { NowPlaying } from './components/Pages/NowPlaying';
-import { TopRated } from './components/Pages/TopRated';
-import { Upcoming } from './components/Pages/Upcoming';
-import { useState } from 'react';
+import "./App.css";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { Search } from "./components/functions/search";
+import { Home } from "./components/Pages/Home";
+import { NowPlaying } from "./components/Pages/NowPlaying";
+import { TopRated } from "./components/Pages/TopRated";
+import { Upcoming } from "./components/Pages/Upcoming";
+import { useState } from "react";
 
 function App() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -17,13 +17,13 @@ function App() {
   return (
     <BrowserRouter>
       <div>
-        <div className='App-header'>
+        <div className="App-header">
           <header>
             <img src="../images/popcorn.png" alt="popcorn" />
             <h2 id="heading">MOVIE MANIA!</h2>
           </header>
         </div>
-        <div className='navbar'>
+        <div className="navbar">
           <ul>
             <li><Link to="/popular">Popular</Link></li>
             <li><Link to="/nowPlaying">Now Playing</Link></li>
@@ -35,8 +35,8 @@ function App() {
         <Routes>
           <Route path="/popular" element={<Home searchQuery={searchQuery} />} />
           <Route path="/nowPlaying" element={<NowPlaying searchQuery={searchQuery} />} />
-          <Route path='/upcoming' element={<Upcoming searchQuery={searchQuery} />} />
-          <Route path='/topRated' element={<TopRated searchQuery={searchQuery} />} />
+          <Route path="/upcoming" element={<Upcoming searchQuery={searchQuery} />} />
+          <Route path="/topRated" element={<TopRated searchQuery={searchQuery} />} />
         </Routes>
       </div>
     </BrowserRouter>

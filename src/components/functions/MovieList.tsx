@@ -1,5 +1,6 @@
 import React from "react";
 import { Movie } from '../Pages/Home';
+import { FaHeart } from "react-icons/fa";
 
 interface Props {
     movies: Movie[];
@@ -18,7 +19,10 @@ const MovieList: React.FC<Props> = ({ movies, currentPage, totalPages, handleNex
                     <div className="movie-container" key={movie.id}>
                         <h2>{movie.title}</h2>
                         {movie.poster_path && (
-                            <img src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} alt={`${movie.title} Poster`} />
+                            <div className="image-container">
+                                <img src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} alt={`${movie.title} Poster`} />
+                                <div className='overlay d-flex align-items-center justify-content-center'><button>Add to Favourites<FaHeart color="darkred" /></button></div>
+                            </div>
                         )}
                         <p>Release date: {movie.release_date}</p>
                         <p>Vote average: {movie.vote_average}</p>
